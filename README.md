@@ -34,7 +34,27 @@
 - 日志打印状态
 - 可配置（机器人 key、监听端口）
 
+🧵 构建 & 运行
+本地运行：
+```
+go mod init metabase-wechat-hook
+go mod tidy
+WECHAT_WEBHOOK_KEY=xxxx go run main.go
+```
+访问：
+```
+curl -X POST http://localhost:8080/webhook \
+  -H 'Content-Type: application/json' \
+  -d '{"data":{"alert_condition":"Results changed","question_name":"每日订单数"}}'
+```
 
+Docker 构建：
+```
+docker build -t metabase-wechat-hook .
+docker run -p 8080:8080 -e WECHAT_WEBHOOK_KEY=xxxx metabase-wechat-hook
+```
+
+---
 python示例
 ```
 # metabase_to_wechat.py
