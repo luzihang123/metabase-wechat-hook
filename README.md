@@ -61,3 +61,10 @@ def metabase_alert():
     return {"status": "forwarded", "wechat_status": res.json()}
 
 ```
+步骤：
+本地部署这个服务，比如部署在 http://your-server:5000/metabase-webhook
+
+Metabase 中的 webhook URL 改为这个中间服务地址
+
+再次点击 “发送测试请求”，你应该可以收到一条格式正常的微信消息
+
