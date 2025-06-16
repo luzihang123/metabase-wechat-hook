@@ -34,3 +34,30 @@
 - 日志打印状态
 - 可配置（机器人 key、监听端口）
 
+
+python示例
+```
+# metabase_to_wechat.py
+from flask import Flask, request
+import requests
+
+app = Flask(__name__)
+
+WECHAT_WEBHOOK = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=xxx"
+
+@app.route("/metabase-webhook", methods=["POST"])
+def metabase_alert():
+    data = request.get_json()
+    alert_name = data.get("data", {}).get("alert_condition", "Metabase 告警")
+    question = data.get("data", {}).get("question_name", "未知问题")
+    msg = f"📢 [Metabase 告警]：{alert_name}\n问题：{question}"
+    
+    payload = {
+        "msgtype": "text",
+        "text": {"content": msg}
+    }
+
+    res = requests.post(WECHAT_WEBHOOK, json=payload)
+    return {"status": "forwarded", "wechat_status": res.json()}
+
+```
